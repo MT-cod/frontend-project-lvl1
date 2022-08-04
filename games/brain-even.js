@@ -1,13 +1,14 @@
 import readlineSync from 'readline-sync';
+import { getRandIntFromInterval } from '../src/index.js';
 
 // Если переданное число чётное, то возвращаем 'yes', иначе 'no'
-export function checkEven(num) {
+function checkEven(num) {
   return (num % 2 === 0) ? 'yes' : 'no';
 }
 
 // Вопрос-ответ по логике игры "Проверка на чётность". Возвращает ответ юзера и правльный ответ.
-export function run() {
-  const randomNum = Math.floor(Math.random() * 100);
+export default function run() {
+  const randomNum = getRandIntFromInterval(1, 100);
   console.log('Answer "yes" if the number is even, otherwise answer "no".');
   console.log(`Question: ${randomNum}`);
   const answer = readlineSync.question('Your answer: ');

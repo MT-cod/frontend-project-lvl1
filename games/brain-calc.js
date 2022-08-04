@@ -1,45 +1,50 @@
-#!/usr/bin/env node
-
 import readlineSync from 'readline-sync';
+import { getRandIntFromInterval } from '../src/index.js';
 
-console.log('Welcome to the Brain Games!');
-
-function greeting() {
-  const name = readlineSync.question('May I have your name? ');
-  console.log(`Hello, ${name}!`);
-
-  return name;
-}
-
-// Если переданное число чётное, то возвращаем 'yes', иначе 'no'
-function checkEven(num) {
-  return (num % 2 === 0) ? 'yes' : 'no';
-}
-
-// Вопрос-ответ по логике игры "Проверка на чётность". Возвращает ответ юзера и правльный ответ.
-function runBrainEven() {
-  const randomNum = Math.floor(Math.random() * 100);
-  console.log('Answer "yes" if the number is even, otherwise answer "no".');
-  console.log(`Question: ${randomNum}`);
-  const answer = readlineSync.question('Your answer: ');
-  const rightAnswer = checkEven(randomNum);
-
-  return [answer, rightAnswer];
-}
-
-const name = greeting();
-
-// Цикл-счётчик вопрос-ответ
-function threeTry() {
-  for (let i = 0; i < 3; i += 1) {
-    const [answer, rightAnswer] = runBrainEven();
-    if (answer !== rightAnswer) {
-      console.log(`'${answer}' is wrong answer ;(. Correct answer was '${rightAnswer}'.`);
-      return false;
-    }
-    console.log('Correct!');
+// Возвращаем случайную операцию для калькулятора
+function getRandOperationForCalc() {
+  const randomNum = getRandIntFromInterval(1, 3);
+  let operation = '';
+  switch (randomNum) {
+    case 1:
+      operation = '+';
+      break;
+    case 2:
+      operation = '-';
+      break;
+    case 3:
+      operation = '*';
+      break;
+    default:
+      //
   }
-  return true;
+
+  return operation;
 }
 
-console.log(threeTry() ? `Congratulations, ${name}!` : `Let's try again, ${name}!`);
+export default function run() {
+  const randomNum1 = getRandIntFromInterval(1, 100);
+  const randomNum2 = getRandIntFromInterval(1, 100);
+  const operation = getRandOperationForCalc();
+  let rightAnswer;
+
+  console.log('What is the result of the expression?');
+  console.log(`Question: ${randomNum1} ${operation} ${randomNum2}`);
+  const answer = readlineSync.question('Your answer: ');
+
+  switch (operation) {
+    case '+':
+      rightAnswer = randomNum1 + randomNum2;
+      break;
+    case '-':
+      rightAnswer = (randomNum1 - randomNum2);
+      break;
+    case '*':
+      rightAnswer = randomNum1 * randomNum2;
+      break;
+    default:
+      //
+  }
+
+  return [answer, rightAnswer.toString()];
+}
